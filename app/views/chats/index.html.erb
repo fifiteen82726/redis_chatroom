@@ -1,0 +1,32 @@
+<script>
+
+  var sync = function(){
+    var last_timestamp = 0
+    $.getJSON("<%= ajax_chats_path %>?timestamp=" + last_timestamp, function (json) {
+
+      for(var i =0 ;i< json.length;i++){
+        //格式是 [timestamp, msg]
+        $("#chat_list").prepend(json[i][0] + ":" + json[i][1] );
+      }
+    })
+  }
+
+  jQuery(function () {
+   setInterval(sync,1000);
+    $('#submit_text').click(function () {
+      $.post("<%= ajax_chats_path %>?timestamp=" + (new Date()).getTime(),{msg: $('$msg').html()}, function (json) {
+        console.log(json)
+      });
+    });
+  });
+</script>
+
+
+I am <%= session[:name] %>
+
+say <input type = 'text' id = 'msg'>  <button id ='submit_text'> Send </button>
+<ol id = 'chat_list'>
+</ol>
+
+
+
