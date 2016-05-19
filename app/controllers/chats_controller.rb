@@ -1,4 +1,5 @@
 class ChatsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def login #get/post
     unless request.get? #這樣可以區分是get 還是post
       session["name"] = params[:name] #如果不是get的話這個會跑
