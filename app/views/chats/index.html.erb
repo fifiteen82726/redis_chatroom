@@ -5,7 +5,7 @@
     $.getJSON("<%= ajax_chats_path %>?timestamp=" + last_timestamp, function (json) {
       for(var i =0 ;i< json.length;i++){
         //格式是 [timestamp, msg]
-        console.log(json)
+        //console.log(json)
         $("#chat_list").prepend(json[i][0] + ":" + json[i][1]);
         if(json[i][0]>last_timestamp){
           last_timestamp = json[i][0];
@@ -15,10 +15,13 @@
   }
 
   jQuery(function () {
-   setInterval(sync,1000);
+  // setInterval(sync,1000);
     $('#submit_text').click(function () {
-      $.post("<%= ajax_chats_path %>?timestamp=" + (new Date()).getTime(),{msg: $('$msg').html()}, function (json) {
-        console.log(json)
+      $.post(
+          "<%= ajax_chats_path %>",
+      {timestamp :(new Date()).getTime(),msg: $('#msg').val()},
+      function (json) {
+        console.log(json);
       });
     });
   });

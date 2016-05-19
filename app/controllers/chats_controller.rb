@@ -20,7 +20,7 @@ class ChatsController < ApplicationController
       msg = params[:msg]
       name = session[:name]
       $redis.zadd('chat_room', timestamp, '#{name} : #{msg}')
-      reder :json => {:status => 'success '}
+      render :json => {:status => 'success', :timestamp => timestamp}.to_json
 
     else
 
@@ -28,8 +28,8 @@ class ChatsController < ApplicationController
       msg =[]
       $redis.zrange('chat_room', timestamp+1, Time.now.to_i, {withscores:true}).each do |source|
         #格式是 ["JC : yoo" , timestamp]
-        msg << [source[1].to_i , source[0]]
-      ap msg
+        msg << [source [1].to_i , source[0]]
+     #s ap msg
       end
       render :json =>msg.to_json
 
