@@ -29,7 +29,7 @@ class ChatsController < ApplicationController
       $redis.zrange('chat_room', timestamp+1, Time.now.to_i, {withscores:true}).each do |source|
         #格式是 ["JC : yoo" , timestamp]
         msg << [source[1].to_i , source[0]]
-      #ap msg
+      ap msg
       end
       render :json =>msg.to_json
 

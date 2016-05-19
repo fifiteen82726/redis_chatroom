@@ -1,14 +1,17 @@
 <script>
-
+  var last_timestamp = 0
   var sync = function(){
-    var last_timestamp = 0
-    $.getJSON("<%= ajax_chats_path %>?timestamp=" + last_timestamp, function (json) {
 
+    $.getJSON("<%= ajax_chats_path %>?timestamp=" + last_timestamp, function (json) {
       for(var i =0 ;i< json.length;i++){
         //格式是 [timestamp, msg]
-        $("#chat_list").prepend(json[i][0] + ":" + json[i][1] );
+        console.log(json)
+        $("#chat_list").prepend(json[i][0] + ":" + json[i][1]);
+        if(json[i][0]>last_timestamp){
+          last_timestamp = json[i][0];
+        }
       }
-    })
+    });
   }
 
   jQuery(function () {
