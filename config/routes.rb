@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   #resources :samples
 
+
+
   resources :chats , :only => []do
     collection do
       match :login, :via => [:get, :post]
@@ -10,6 +12,8 @@ Rails.application.routes.draw do
 
     end
   end
+
+  root 'chats#login'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

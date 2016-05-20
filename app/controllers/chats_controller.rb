@@ -1,5 +1,5 @@
 class ChatsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+
   def login #get/post
     unless request.get? #這樣可以區分是get 還是post
       session["name"] = params[:name] #如果不是get的話這個會跑
@@ -20,16 +20,16 @@ class ChatsController < ApplicationController
       timestamp = params[:timestamp].to_i
       msg = params[:msg]
       name = session[:name]
-      $redis.zadd('chat_room', timestamp, '#{name} : #{msg}')
+      $redis.zadd('chat_room', timestamp, "#{name} : #{msg}")
       render :json => {:status => 'success', :timestamp => timestamp}.to_json
 
     else
 
       timestamp = params[:timestamp].to_i
       msg =[]
-      $redis.zrange('chat_room', timestamp+1, Time.now.to_i, {withscores:true}).each do |source|
+      $redis.zrangebyscore('chat_room', timestamp+1, (Time.now.to_f*1000).to_i, {withscores:true}).each do |source|
         #格式是 ["JC : yoo" , timestamp]
-        msg << [source [1].to_i , source[0]]
+        msg << [source[1].to_i , source[0]]
      #s ap msg
       end
       render :json =>msg.to_json
